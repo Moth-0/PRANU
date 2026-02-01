@@ -1,9 +1,9 @@
 CXXFLAGS = -Wall -Werror -O
 LDLIBS = -lstdc++ -lm
-RM = del /f
+RM = rm -f
 
 Out.txt : math
-	math > Out.txt
+	./math > Out.txt
 math : math.o
 	$(CXX) math.o -o math $(LDLIBS)
 math.o : math.cc

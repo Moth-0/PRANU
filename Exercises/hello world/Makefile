@@ -1,9 +1,9 @@
 CXXFLAGS = -Wall -Werror -O
 LDLIBS = -lstdc++ -lm
-RM = del /f
+RM = rm -f
 
 Out.txt : hello
-	hello > Out.txt
+	./hello > Out.txt
 hello : hello.o
 	$(CXX) hello.o -o hello $(LDLIBS)
 hello.o : hello.cc
