@@ -1,5 +1,5 @@
 #include <iostream>
-#define _USE_MATH_DEFINES // For math constants
+#include <numbers>
 #include <cmath>
 #include "sfuns.h"
 
@@ -7,8 +7,8 @@
 int main() {
     double a = std::sqrt(2);
     double b = std::pow(2, 0.2); // No fractions in c++
-    double c = std::exp(M_PI);
-    double d = std::pow(M_PI, M_E);
+    double c = std::exp(std::numbers::pi);
+    double d = std::pow(std::numbers::pi, std::numbers::e);
 
     std::cout << "Sqrt(2) = " << a << std::endl;
     std::cout << "2^1/5 = " << b << std::endl;

@@ -1,16 +1,26 @@
-CXXFLAGS = -Wall -Werror -O
+# Default Makefile
+# Variables
+CXXFLAGS = -Wall -Werror -O -std=c++23
+CXX = c++
 LDLIBS = -lstdc++ -lm
 RM = rm -f
 
-Out.txt : math
-	./math > Out.txt
-math : math.o sfuns.o
-	$(CXX) math.o sfuns.o $(LDLIBS) -o math
-math.o : math.cc sfuns.h
-	$(CXX) $(CXXFLAGS) -c math.cc -o math.o
+# Main file
+TARGET = math
 
-sfuns.o : sfuns.cc sfuns.h
-	$(CXX) $(CXXFLAGS) -c sfuns.cc -o sfuns.o
+# Object files .o (add all) 
+OBJECTS = math.o sfuns.o
+
+# txt output
+Out.txt : $(TARGET)
+	./$(TARGET) > Out.txt
+
+
+$(TARGET) : $(OBJECTS)
+	$(CXX) $(LDFLAGS) $(LDLIBS) -o $(TARGET) $(OBJECTS)
+
+%.o : %.cc
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
 clean :
-	$(RM) Out.txt math.o math sfuns.o 
+	$(RM) Out.txt $(TARGET) $(OBJECTS)
