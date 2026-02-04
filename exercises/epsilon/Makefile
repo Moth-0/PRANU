@@ -14,7 +14,7 @@ OBJECTS = main.o
 # txt output
 Out.txt : $(TARGET)
 	./$(TARGET) > Out.txt
-
+	cat Out.txt
 
 $(TARGET) : $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(LDLIBS) -o $(TARGET) $(OBJECTS)
