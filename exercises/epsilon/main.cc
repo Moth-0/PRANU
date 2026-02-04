@@ -2,8 +2,10 @@
 #include<limits>
 #include<cmath>
 #include<iomanip>
+#include"funcs.h"
 
 int main() {
+    // Part 1
     float f = 1.0;
     double d = 1.0;
     long double l = 1.0;
@@ -23,6 +25,7 @@ int main() {
     }
     l *= 2.0;
 
+    std::cout << "-- Part 1 --" << std::endl;
     std::cout << "float eps= " << f << std::endl;
     std::cout << "double eps= " << d << std::endl;
     std::cout << "long double eps= " << l << std::endl;
@@ -41,15 +44,30 @@ int main() {
     double tiny = epsilon/2;
     double a = 1+tiny+tiny;
     double b = tiny+tiny+1;
-    std::cout << "a==b ? " << (a==b ? "true":"false") << "\n";
-    std::cout << "a>1  ? " << (a>1  ? "true":"false") << "\n";
-    std::cout << "b>1  ? " << (b>1  ? "true":"false") << "\n";
+    std::cout << "\n-- Part 2 --" << std::endl;
+    std::cout << "a==b ? " << (a==b ? "true":"false") << std::endl;
+    std::cout << "a>1  ? " << (a>1  ? "true":"false") << std::endl;
+    std::cout << "b>1  ? " << (b>1  ? "true":"false") << std::endl;
 
 
     std::cout << std::fixed << std::setprecision(17);
-    std::cout << "       tiny=" << tiny << "\n";
-    std::cout << "1+tiny+tiny=" << a << "\n";
-    std::cout << "tiny+tiny+1=" << b << "\n";
+    std::cout << "       tiny=" << tiny << std::endl;
+    std::cout << "1+tiny+tiny=" << a << std::endl;
+    std::cout << "tiny+tiny+1=" << b << std::endl;
+
+    // Part 3
+    double d1 = 0.1+0.1+0.1+0.1+0.1+0.1+0.1+0.1;
+    double d2 = 8*0.1;
+
+    std::cout << "\n-- Part 3 --" << std::endl;
+    std::cout << "d1==d2? " << (d1==d2 ? "true":"false") << std::endl; 
+    std::cout << std::fixed << std::setprecision(17);
+    std::cout << "d1=" << d1 << std::endl;
+    std::cout << "d2=" << d2 << std::endl;
+
+    // Part 4
+    std::cout << "\n-- Part 4 --" << std::endl;
+    std::cout << "Aprrox(d1, d2) = " << funcs::approx(d1, d2) << std::endl;
 
     return 0;
 }

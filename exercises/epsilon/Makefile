@@ -9,7 +9,7 @@ RM = rm -f
 TARGET = main
 
 # Object files .o (add all) 
-OBJECTS = main.o
+OBJECTS = main.o funcs.o
 
 # txt output
 Out.txt : $(TARGET)
