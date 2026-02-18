@@ -5,22 +5,27 @@ CXX = c++
 LDLIBS = -lstdc++ -lm
 RM = rm -f
 
-# Main file
-TARGET = main
+TIME = time --append --output $@ --format "$$nthreads %e %U"
 
-# Object files .o (add all) 
-OBJECTS = main.o
+times.png: out.times Makefile
+	echo '\
+		set terminal png ;\
+		set output "$@" ;\
+		set xlabel "number of threads" ;\
+		set ylabel "real time" ;\
+		a=1; b=10 ;\
+		f(n) = a+b/n ;\
+		fit f(n) "$<" using 1:2 via a,b ;\
+		plot "$<" using 1:2 with linespoints title "Times" ;\
+	' | tee log.times | gnuplot
 
-# txt output
-Out.txt : $(TARGET)
-	./$(TARGET) > Out.txt
-	cat Out.txt
-
-$(TARGET) : $(OBJECTS)
-	$(CXX) $(LDFLAGS) $(LDLIBS) -o $(TARGET) $(OBJECTS)
-
-%.o : %.cc
-	$(CXX) $(CXXFLAGS) -c $^ -o $@
+N = 10000000000
+out.times: main Makefile
+	>$@
+	>log.main
+	for nthreads in 1 2 3 4 5 6 7 8 9 10 ;\
+		do $(TIME) ./main -terms $(N) -threads $$nthreads >> log.main ;\
+	done
 
 clean :
-	$(RM) *.txt $(TARGET) $(OBJECTS)
+	rm -rf *.txt *.o log.* out.times

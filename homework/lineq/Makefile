@@ -10,11 +10,11 @@ Out.txt : main Makefile
 	./main > Out.txt
 	cat Out.txt
 
-main : main.cc matrix.h
+main : main.o
 	$(CXX) $(LDFLAGS) $(LDLIBS) -o $@ $^
 
-%.o : %.cc
-	$(CXX) $(CXXFLAGS) -c $^ -o $@
+main.o : main.cc matrix.h QR.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean :
 	$(RM) *.o *.txt
