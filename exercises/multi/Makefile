@@ -13,17 +13,20 @@ times.png: out.times Makefile
 		set output "$@" ;\
 		set xlabel "number of threads" ;\
 		set ylabel "real time" ;\
+		set title "Computation times for 1e10 terms" ;\
 		a=1; b=10 ;\
-		f(n) = a+b/n ;\
-		fit f(n) "$<" using 1:2 via a,b ;\
-		plot "$<" using 1:2 with linespoints title "Times" ;\
+		f(x) = a+b/x ;\
+		fit f(x) "$<" using 1:2 via a,b ;\
+		plot \
+			"$<" using 1:2 with linespoints title "times" \
+			,f(x) title "fit with 1/x" ;\
 	' | tee log.times | gnuplot
 
 N = 10000000000
-out.times: main Makefile
+out.times: main 
 	>$@
 	>log.main
-	for nthreads in 1 2 3 4 5 6 7 8 9 10 ;\
+	for nthreads in 1 2 4 8 16 32;\
 		do $(TIME) ./main -terms $(N) -threads $$nthreads >> log.main ;\
 	done
 

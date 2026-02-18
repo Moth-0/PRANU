@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
     long long nterms = 1000000000000000; int nthreads=1;
     for(int i=0;i<argc;i++) {
         std::string arg = argv[i];
-        if(arg=="-terms" && i+1 < argc) nterms=(int)std::stoll(argv[++i]);
+        if(arg=="-terms" && i+1 < argc) nterms=(long long)std::stoll(argv[++i]);
         if(arg=="-threads" && i+1 < argc) nthreads=(int)std::stoi(argv[++i]);
     }
     std::cout << "terms: " << nterms << std::endl;
