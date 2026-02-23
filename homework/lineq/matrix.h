@@ -1,3 +1,5 @@
+#pragma once 
+
 // What is this?
 #ifndef HAVE_MATRIX_H
 #define HAVE_MATRIX_H
@@ -21,7 +23,7 @@
 namespace pp{
 struct vector {
 	std::vector<double> data;
-	vector(int n) : data(n) {}
+	vector(std::size_t n) : data(n) {}
 
 	vector(std::initializer_list<double> list) :
 		data(list.begin(),list.end()) {}
@@ -116,6 +118,12 @@ vector pow(const vector& v, int x) {
     FORV(i, r) r[i] = std::pow(v[i], x);
     return r;}
 
+double dot(vector& v, vector& u) {
+        double sum = 0;
+        FORV(i, v) sum+= v[i] * u[i];
+        return sum;
+    }
+
 bool approx(double x,double y,double acc=1e-6,double eps=1e-6){
 	if(std::fabs(x-y) < acc)return true;
 	if(std::fabs(x-y) < eps*(std::fabs(x)+std::fabs(y)))return true;
@@ -137,25 +145,14 @@ std::ostream& operator<<(std::ostream& os, const vector& v) {
 // Matrix object 
 struct matrix {
 	std::vector<vector> cols;
-    matrix(int n,int m) : cols(m, vector(n)) {}
+    matrix(std::size_t n,std::size_t m) {
+        cols.resize(m);
+        for(std::size_t i=0;i<m;i++) cols[i].resize(n);
+    }
     
     matrix(std::initializer_list<std::initializer_list<double>> list) {
-        int rows = list.size();
-        int cols_count = (rows > 0) ? list.begin()->size() : 0;
-        
-        // Resize the column vector to hold 'cols_count' columns, 
-        // each being a vector of size 'rows'
-        resize(rows, cols_count);
-
-        int i = 0;
-        for (auto row_list : list) {
-            int j = 0;
-            for (double val : row_list) {
-                // Mapping the row-based input to your column-major storage
-                SELF(i, j) = val; 
-                j++;
-            }
-            i++;
+        for(auto c : list) {
+            cols.push_back(vector(c));
         }
     }
 
@@ -285,15 +282,16 @@ matrix pow (const matrix& M, int x) {
     FOR_COLS(i, R) R[i] = pow(M[i], x);
     return R;}
 
-// Inside namespace pp
 std::ostream& operator<<(std::ostream& os, const matrix& M) {
     int rows = M.size1();
     int cols = M.size2();
+    os << std::fixed << std::setprecision(3);
     for (int i = 0; i < rows; ++i) {
         os << "[";
         for (int j = 0; j < cols; ++j) {
             // Using m(i,j) for row i, column j
-            os << M(i, j) << (j == cols - 1 ? "" : " ");
+            os << std::setw(6) << std::right << M(i, j);
+            if (j < cols - 1) os << " ";
         }
         if (i != rows - 1) os << "]\n";
     }

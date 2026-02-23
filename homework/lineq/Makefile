@@ -4,7 +4,7 @@ CXX = c++
 LDLIBS = -lstdc++ -lm
 RM = rm -f
 
-all : main Out.txt
+all : Out.txt
 
 Out.txt : main Makefile
 	./main > Out.txt
