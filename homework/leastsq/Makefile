@@ -38,4 +38,4 @@ main.o : main.cc matrix.h QR.h
 
 
 clean :
-	$(RM) *.o *.txt *.log
+	$(RM) *.o *.txt *.log *.data *.gpi *.gp

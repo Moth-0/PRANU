@@ -1,3 +1,0 @@
-Resulting coef: (4.95866, -0.170624) ± (0.0354019, 0.00715662)
-Half-life = 4.06242 ± 0.170394 days
-Experimental: 3.632 days

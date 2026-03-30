@@ -14,7 +14,7 @@ times.data : time
 	>$@
 	for N in $$(seq 100 100 1000); do \
 		time --format "$$N %e" --output $@ --append \
-		./$< -size $$N 1>out 2>err ;\
+		./$< -size $$N 1>out.txt 2>err.txt ;\
 	done 
 
 times.png: times.data Makefile
@@ -44,4 +44,4 @@ time.o : time.cc matrix.h QR.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean :
-	$(RM) *.o *.txt
+	$(RM) *.o *.txt *.log *.gpi *.data
