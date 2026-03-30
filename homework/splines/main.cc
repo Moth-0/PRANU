@@ -2,8 +2,9 @@
 #include <iostream>
 #include <fstream>
 
-#include "spline.h"
+#include "linspline.h"
 #include "quadspline.h"
+#include "cubespline.h"
 
 int main() {
     // --- Part A ---
@@ -62,6 +63,36 @@ int main() {
     }
     inter_B.close();
 
+    // -- Part C - Cubic Spline -- 
+    // Datapoints
+    vector xC;
+    vector yC;
+    vector zC;
+    std::ofstream points_C("points_C.data");
+    for (double i=0; i<13; i++){
+        double x_p = i*0.5;
+        double y_p = (x_p * x_p);
+        double z_p = y_p * x_p;
+        xC.push_back(x_p);
+        yC.push_back(y_p);
+        zC.push_back(z_p);
+        points_C << x_p << " " << y_p << " " << z_p << "\n";
+    }
+    points_C.close();
+
+    cspline cubes1(xC, xC);
+    cspline cubes2(xC, yC);
+    cspline cubes3(xC, zC);
+
+    // Make interpolation file 
+    std::ofstream inter_C("inter_C.data");
+    for (double z=0.0; z<6.0; z += 0.2) {
+        inter_C << z << " " 
+              << cubes1.eval(z) << " " << cubes1.deriv(z) << " " << cubes1.deriv2(z) << " " << cubes1.integ(z) << " " 
+              << cubes2.eval(z) << " " << cubes2.deriv(z) << " " << cubes2.deriv2(z) << " " << cubes2.integ(z) << " " 
+              << cubes3.eval(z) << " " << cubes3.deriv(z) << " " << cubes3.deriv2(z) << " " << cubes3.integ(z) << "\n";
+    }
+    inter_C.close();
 
     return 0;
 }
