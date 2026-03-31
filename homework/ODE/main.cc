@@ -132,5 +132,56 @@ int main () {
     auto [x_rel, y_rel] = driver(f_rel, start, end, y_init_rel);
     save_data(x_rel, y_rel, "data/rel.data");
 
+    // --- Part C ---
+    // Three body problem with G=m1=m2=m3=1
+
+    auto f_three = [](double t, const vector& z) -> vector {
+        /* z consists of 3*2 positions and 3*2 velocities 
+           z = {x1, y1, x2, y2, x3, y3, x1', y1', x2', y2', x3', y3'} 
+        dzdt = {vx1, vy1, vx2, vy2, vx3, vy3, vx1', vy1', vx2', vy2', vx3', vy3'}*/
+        vector dzdt(12);
+        for(size_t i=0; i<7; i++) dzdt[i] = z[i+6];
+
+        // calculate distance
+        double dx12 = z[2] - z[0], dy12 = z[3] - z[1];
+        double dx13 = z[4] - z[0], dy13 = z[5] - z[1];
+        double dx23 = z[4] - z[2], dy23 = z[5] - z[3];
+
+        // distance
+        double r12 = std::pow(dx12*dx12 + dy12*dy12, 1.5);
+        double r13 = std::pow(dx13*dx13 + dy13*dy13, 1.5);
+        double r23 = std::pow(dx23*dx23 + dy23*dy23, 1.5);
+
+        // Body 1 acceleration
+        dzdt[6] = (dx12 / r12) + (dx13 / r13);
+        dzdt[7] = (dy12 / r12) + (dy13 / r13);
+
+        // Body 2 acceleration 
+        dzdt[8] = (-dx12 / r12) + (dx23 / r23);
+        dzdt[9] = (-dy12 / r12) + (dy23 / r23);
+
+        // Body 3 acceleration 
+        dzdt[10] = (-dx13 / r13) + (-dx23 / r23);
+        dzdt[11] = (-dy13 / r13) + (-dy23 / r23);
+
+        return dzdt;    
+    };
+
+    // From GAI:
+    vector y_init_3b(12);
+    // Body 1
+    y_init_3b[0] = 0.97000436;  y_init_3b[1] = -0.24308753; // X, Y
+    y_init_3b[6] = 0.46620368;  y_init_3b[7] = 0.43236573;  // Vx, Vy
+    // Body 2
+    y_init_3b[2] = -0.97000436; y_init_3b[3] = 0.24308753;
+    y_init_3b[8] = 0.46620368;  y_init_3b[9] = 0.43236573;
+    // Body 3
+    y_init_3b[4] = 0.0;         y_init_3b[5] = 0.0;
+    y_init_3b[10] = -0.93240737; y_init_3b[11] = -0.86473146;
+
+    // VERY tight tolerances required because RK12 is low-order and 3-body is highly unstable!
+    auto [x_3b, y_3b] = driver(f_three, 0.0, 2.0, y_init_3b);
+    save_data(x_3b, y_3b, "data/three_body.data");
+
     return 0;
 }

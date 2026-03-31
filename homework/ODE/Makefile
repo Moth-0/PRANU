@@ -4,7 +4,21 @@ CXX = c++
 LDLIBS = -lstdc++ -lm
 RM = rm -f
 
-all : plot_harm.png plot_damp.png plot_lv.png plot_grav.png
+all : plot_harm.png plot_damp.png plot_lv.png plot_grav.png plot_three.png
+
+plot_three.png : files
+	echo '\
+	set terminal pngcairo size 800,400 ;\
+	set output "three_body.png" ;\
+	set title "Three-Body Problem: Stable Figure-8 Orbit" ;\
+	set xlabel "X Position" ;\
+	set ylabel "Y Position" ;\
+	set size ratio -1 ;\
+	set grid ;\
+	plot "data/three_body.data" using 2:3 skip 1 with lines lw 2 dt 2 lc rgb "red" title "Body 1", \
+	     "" using 4:5 skip 1 with lines lw 2 dt 3 lc rgb "blue" title "Body 2", \
+	     "" using 6:7 skip 1 with lines lw 2 dt 4 lc rgb "green" title "Body 3" \
+	' | tee log.3body.gpi | gnuplot
 
 plot_grav.png : files
 	echo '\
@@ -69,4 +83,4 @@ main.o : main.cc ODE.h
 
 
 clean :
-	$(RM) *.o *.txt *.log *.gpi *.data
+	$(RM) *.o *.txt *.log *.gpi data/*.data
