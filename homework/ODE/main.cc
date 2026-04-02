@@ -6,7 +6,7 @@
 
 using namespace pp;
 
-// Helper function to save results to a CSV file
+// Helper function to save results to a file
 void save_data(const vector& xlist, 
                const std::vector<vector>& ylist, 
                const std::string& filename) 

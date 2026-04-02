@@ -1,0 +1,64 @@
+ --- Part A --- 
+∫_0^1 dx √(x)       = 0.666681
+∫_0^1 dx 1/√(x)     = 2
+∫_0^1 dx √(1-x²)    = 0.785406
+∫_0^1 dx ln(x)/√(x) = -4
+
+ --- Part B --- 
+ Clenshaw-Curtis: 
+[ 1/√(x) from 0 to 1 ]
+Clenshaw-Curtis Calc = 1.999999890310701 (52 steps)
+Standard Integrator  = 1.999997387964028 (17140 steps)
+SciPy Exact Match    = 1.9999999999999984
+
+[ ln(x)/√(x) from 0 to 1 ]
+Clenshaw-Curtis Calc = -3.999998133396026 (272 steps)
+Standard Integrator  = -3.999998348990209 (29972 steps)
+SciPy Exact Match    = -4.000000000000085
+
+
+ Infinite limits: 
+[ Gaussian: e^(-x²) from -∞ to +∞ ]
+Calculated Value     = 1.772556318129739 (240 steps)
+scipy.integrate.quad = 1.7724538509055159 
+Exact Value: √(π)    = 1.772453850905516
+
+[ Cauchy: 1/(1+x²) from 0 to +∞ ]
+Calculated Value     = 1.570800055564741 (80 steps)
+scipy.integrate.quad = 1.5707963267948966 
+Exact Value: π/2     = 1.570796326794897
+
+
+ --- Part C --- 
+[ Std: √(x) from 0 to 1 ]
+Estimated Error = 7.174213809494586e-05
+Actual Error    = 1.426622707101366e-05
+
+[ Std: 1/√(x) from 0 to 1 ]
+Estimated Error = 7.70897793161969e-05
+Actual Error    = 2.612035972182625e-06
+
+[ Std: √(1-x²) from 0 to 1 ]
+Estimated Error = 6.030366187308314e-05
+Actual Error    = 8.146645300799449e-06
+
+[ Std: ln(x)/√(x) from 0 to 1 ]
+Estimated Error = 8.093488534714956e-05
+Actual Error    = 1.651009791103775e-06
+
+[ CC: 1/√(x) from 0 to 1 ]
+Estimated Error = 6.900120469914088e-05
+Actual Error    = 1.096892987551001e-07
+
+[ CC: ln(x)/√(x) from 0 to 1 ]
+Estimated Error = 8.725307076468217e-05
+Actual Error    = 1.86660397449856e-06
+
+[ CC: e^(-x²) from -∞ to +∞ ]
+Estimated Error = 6.113908503033639e-05
+Actual Error    = 0.000102467224222913
+
+[ CC: 1/(1+x²) from 0 to +∞ ]
+Estimated Error = 8.267929318177744e-05
+Actual Error    = 3.728769844668633e-06
+
