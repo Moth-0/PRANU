@@ -1,0 +1,5 @@
+ - Watson Triple Integral 
+Estimated: 1.40651
+Exact:     1.3932
+Est Error: 0.021743
+Act Error: 0.013309
