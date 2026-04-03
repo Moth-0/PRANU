@@ -4,9 +4,9 @@ CXX = c++
 LDLIBS = -lstdc++ -lm
 RM = rm -f
 
-all : circ.png
+all : circ.png sine_wave.png
 
-circ.png : files 
+circ.png : files Makefile
 	echo '\
 	set terminal pngcairo ;\
 	set output "$@" ;\
@@ -19,6 +19,20 @@ circ.png : files
 	plot "circ.data" using 1:3 skip 1 with lines lw 2 lc rgb "black" title "Estimate", \
 		 1.7/sqrt(x) with lines lw 2 dt 2 lc rgb "red" title "1/sqrt(x)" \
 	' | tee log.fig1.gpi | gnuplot
+
+sine_wave.png : files Makefile
+	echo '\
+	set terminal pngcairo ;\
+	set output "$@" ;\
+	set title "Actual error of integration methods" ;\
+	set xlabel "N" ;\
+	set ylabel "Err" ;\
+	set grid ;\
+	set logscale x ;\
+	set format x "10^{%T}" ;\
+	plot "sine.data" using 1:2 skip 1 with lines lw 2 dt 2 lc rgb "black" title "Plain", \
+		 "sine.data" using 1:3 skip 1 with lines lw 2 dt 2 lc rgb "red" title "Quasi" \
+	' | tee log.fig2.gpi | gnuplot
 
 files : main
 	./main > Out.txt

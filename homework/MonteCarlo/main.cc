@@ -35,5 +35,26 @@ int main() {
     std::cout << "Exact:     " << exact << std::endl;
     std::cout << "Est Error: " << err << std::endl;
     std::cout << "Act Error: " << std::abs(exact - val) << std::endl;
+
+
+    // --- Part B ---
+    auto sine_wave = [](vector x) -> double {
+        return std::sin(x[0])*std::sin(x[1]);
+    }; 
+
+    // boundaries: 0 to Pi
+    vector a3 = {0.0, 0.0}; vector b3 = {M_PI, M_PI};
+
+    double exact3 = 4.0; // Actual integral value
+    std::ofstream out2("sine.data");
+        out2 << "N err_plain err_quasi \n";
+        for (int N=1e2; N<1e7; N*=2) {
+            auto [valp, ep] = plainmc(sine_wave, a3, b3, N);
+            auto [valq, eq] = quacimc(sine_wave, a3, b3, N);
+            double err_p = std::abs(exact3-valp); double err_q = std::abs(exact3-valq); 
+            out2 << N << " " << err_p << " " << err_q << "\n";
+        }
+
+
     return 0;
 }
