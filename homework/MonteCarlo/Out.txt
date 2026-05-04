@@ -1,0 +1,12 @@
+ - Ellipsoid Volume Integral 
+Estimated: 25.1301
+Exact:     25.1327
+Est Error: 0.0107212
+Act Error: 0.00260043
+
+
+ - Cos Integral 
+plainmc: 1.38418 ± 0.00604519
+cppmc:   1.40197 ± 0.0130237
+quacimc: 1.39064 ± 0.0180023
+Exact:   1.3932

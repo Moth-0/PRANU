@@ -7,6 +7,26 @@ using vector = std::vector<double>;
 using tuple = std::tuple<double, double>;
 using Func = std::function<double(vector)>;
 
+
+struct rng {
+    uint32_t seed;
+    uint32_t a;
+    uint32_t c;
+    uint64_t m;
+
+    rng(uint seed_in, uint32_t a_in = 1664525, uint32_t c_in = 1013904223, uint64_t m_in = std::pow(2, 32)){
+        seed = seed_in; a = a_in; c = c_in; m = m_in;
+    }
+
+    rng() = default;
+    ~rng() = default;
+
+    double uniform(double low=0, double high=1) {
+        seed = (a * seed + c) % m;
+        return (high-low) * (seed+1)/(m+1) + low;
+    }
+};
+
 // Random double between lo and hi
 double randd(double lo, double hi) {
     static std::mt19937_64 rng(std::random_device{}());
@@ -74,6 +94,21 @@ tuple plainmc(Func f, vector& a, vector& b, int N) {
     return {mean*V, std::sqrt(var2/N)*V};
 }
 
+tuple cppmc(Func f, vector& a, vector& b, int N) {
+    int dim = a.size(); 
+    double V=1.0; for(int i=0; i<dim; i++) V *= b[i]-a[i];
+    double sum1=0.0; double sum2=0.0;
+    rng rand(42);
+
+    for (int i=0; i<N; i++) {
+        vector x(dim); for(int j=0; j<dim; j++) x[j] = rand.uniform(a[j], b[j]);
+        double fx = f(x); sum1+=fx; sum2+=fx*fx;
+    }
+
+    // Mean and variance
+    double mean = sum1/N; double var2 = sum2/N-mean*mean;
+    return {mean*V, std::sqrt(var2/N)*V};
+}
 
 tuple quacimc(Func f, vector& a, vector& b, int N) {
     int dim = a.size();
@@ -82,7 +117,7 @@ tuple quacimc(Func f, vector& a, vector& b, int N) {
     Halton halton(dim);
 
     // First sequence 
-    for (int i=0; i<0.5*N; i++) {
+    for (int i=1; i<=0.5*N; i++) {
         vector x_new = halton.random_doubles(i);
         vector x(dim);
         for (int j=0; j<dim; j++) {
@@ -92,7 +127,7 @@ tuple quacimc(Func f, vector& a, vector& b, int N) {
     }
 
     // Second
-    for (int i=0.5*N+1; i<N; i++) {
+    for (int i=0.5*N+1; i<=N; i++) {
         vector x_new = halton.random_doubles(i);
         vector x(dim);
         for (int j=0; j<dim; j++) {
@@ -102,7 +137,9 @@ tuple quacimc(Func f, vector& a, vector& b, int N) {
     }
 
     // Mean and variance
-    double mean = (sum1+sum2)/N; double err = std::abs(sum1-sum2)/N;
+    double mean = (sum1+sum2)/N; 
+    double err = std::abs(sum1-sum2)/(0.5*N);
+
     return {mean*V, err*V};
 }
 
@@ -117,12 +154,18 @@ tuple stratifiedmc(Func f, vector& a, vector& b, int N, int nmin=100) {
     // Sample nmin points
     std::vector<vector> pts(nmin, vector(dim));
     vector fvals(nmin);
+    rng rand(42);
+
+    double sum1 = 0, sum2 = 0;
 
     for (int i=0; i<nmin; i++) {
         for(int j=0; j<dim; j++) {
-            pts[i][j] = randd(a[j], b[j]);
+            pts[i][j] = rand.uniform(a[j], b[j]);
         }
         fvals[i] = f(pts[i]);
+
+        sum1 += fvals[i];
+        sum2 += fvals[i]*fvals[i];
     }
 
     return {0.0,0.0};

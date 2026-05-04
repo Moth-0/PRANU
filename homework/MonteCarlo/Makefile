@@ -4,13 +4,13 @@ CXX = c++
 LDLIBS = -lstdc++ -lm
 RM = rm -f
 
-all : circ.png sine_wave.png
+all : main circle_error.png sine_wave.png
 
-circ.png : files Makefile
+circle_error.png : files Makefile
 	echo '\
 	set terminal pngcairo ;\
 	set output "$@" ;\
-	set title "Circle integral as function of N" ;\
+	set title "Circle integral error as function of N" ;\
 	set xlabel "N" ;\
 	set ylabel "Err" ;\
 	set grid ;\
@@ -45,4 +45,4 @@ main.o : main.cc montecarlo.h
 
 
 clean :
-	$(RM) *.o *.txt *.log *.gpi *.data
+	$(RM) *.o *.txt *.log *.gpi *.data *.png
