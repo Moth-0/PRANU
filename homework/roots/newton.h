@@ -36,7 +36,7 @@ matrix jacobian(Func_list f, vector x, vector fx) {
     return J;
 }
 
-vector newton (Func_list f, vector x, double acc = 1e-4, double alpha_min = 1e-3, int max_iter = 1000){
+vector newton (Func_list f, vector x, double acc = 1e-3, double alpha_min = 1e-3, int max_iter = 200){
     vector fx = eval(f, x); 
     for(int i=0; i<max_iter; i++){
         if (fx.norm() < acc) break;
