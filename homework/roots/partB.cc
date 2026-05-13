@@ -4,7 +4,7 @@
 #include <iomanip>
 
 #include "matrix.h"
-#include "newton.h"
+#include "roots.h"
 #include "ODE.h"
 
 using namespace pp;

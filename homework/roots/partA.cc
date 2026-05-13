@@ -1,4 +1,4 @@
-#include "newton.h"
+#include "roots.h"
 #include "matrix.h"
 
 using namespace pp;

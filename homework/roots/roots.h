@@ -18,7 +18,7 @@ vector eval(const Func_list& flist, const vector& x) {
 }
 
 
-matrix jacobian(Func_list f, vector x, vector fx) {
+matrix jacobian(const Func_list& f, vector x, const vector& fx) {
     size_t dim = x.size();
     matrix J(dim, dim);
 
@@ -36,7 +36,7 @@ matrix jacobian(Func_list f, vector x, vector fx) {
     return J;
 }
 
-vector newton (Func_list f, vector x, double acc = 1e-3, double alpha_min = 1e-3, int max_iter = 200){
+vector newton (const Func_list& f, vector x, double acc = 1e-3, double alpha_min = 1e-3, int max_iter = 200){
     vector fx = eval(f, x); 
     for(int i=0; i<max_iter; i++){
         if (fx.norm() < acc) break;

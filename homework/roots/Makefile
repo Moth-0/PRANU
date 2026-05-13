@@ -7,7 +7,7 @@ RM = rm -f
 
 all : run_partA run_partB
 
-HEADERS = matrix.h newton.h QR.h ODE.h
+HEADERS = matrix.h roots.h QR.h ODE.h
 
 run_partA : partA
 	./partA
