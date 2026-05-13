@@ -1,0 +1,12 @@
+ --- Part A --- 
+Minimization steps: 1837
+x,y: (0.999996, 0.999992)    f(x,y) = 2.94471e-11
+
+Minimization steps: 9122
+x,y: (-0.270821, -0.923049)    f(x,y) = 181.617
+
+
+ --- Part B --- 
+Minimization steps: 42
+m,A,Γ: (-28.3527, 7815.63, 386.615)
+
