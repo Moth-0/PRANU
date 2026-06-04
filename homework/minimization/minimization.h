@@ -7,23 +7,23 @@ namespace pp {
 
 using func = std::function<double(vector)>;
 
-vector gradient(const func& f, vector& x) {
+vector gradient(const func& f, vector x) {
     double fx = f(x);
     size_t n = x.size();
     vector gf(n);
     double dxi; 
 
     for(size_t i=0; i<n; i++){
-        dxi = (1+std::abs(x[i]))*std::pow(2, -26);
+        dxi = (1+std::abs(x[i]))*std::pow(2.0, -26.0);
         x[i] += dxi;
-        gf[i] = (fx - f(x))/dxi;
+        gf[i] = (f(x) - fx)/dxi;
         x[i] -= dxi; 
     }
 
     return gf;
 }
 
-matrix hessian(const func& f, vector& x){
+matrix hessian(const func& f, vector x){
     size_t n = x.size();
     matrix H(n,n);
     vector gfx = gradient(f, x);
@@ -31,7 +31,7 @@ matrix hessian(const func& f, vector& x){
     double dxj; 
 
     for(size_t j=0; j<n; j++) {
-        dxj = (1+std::abs(x[j]))*std::pow(2, -13);
+        dxj = (1+std::abs(x[j]))*std::pow(2.0, -13.0);
         x[j] += dxj;
         dgf = gradient(f, x) - gfx;
         for(size_t i=0; i<n; i++) H(i,j) = dgf[i]/dxj;
@@ -48,22 +48,23 @@ vector newton(const func& f, vector x, double acc = 1e-3, bool verbose = false) 
     vector dx(n);
     int steps = 0;
 
-    while(steps < 10000) {
+    while(steps < 100000) {
         steps++;
         g = gradient(f, x);
         if(g.norm() < acc) break;
         H = hessian(f, x);
 
-        for(size_t i=0; i<n; i++){
-            H(i,i) += 1e-6;
-            dx = QR(H).solve(-g);
-            double λ = 1.0;
-            while(λ >= 1.0/1024.0) {
-                if(f(x+λ*dx) < f(x)) break;
-                λ *= 0.5;
-            } 
-            x += λ*dx;
+        for(size_t i=0; i<n; i++) H(i,i) += 1e-6;
+        dx = QR(H).solve(-g);
+
+        double fx = f(x);
+        double λ = 1.0;
+
+        while(λ >= 1.0/1024.0) {
+            if(f(x+λ*dx) < fx) break;
+            λ *= 0.5;
         }
+        x += λ*dx;
     }
 
     if (verbose) std::cout << "Minimization steps: " << steps << "\n";

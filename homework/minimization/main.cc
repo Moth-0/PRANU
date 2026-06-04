@@ -23,13 +23,13 @@ int main () {
     vector res1 = newton(Rosenbrock, (vector){-1.0, 1.0}, 1e-3, true);
     std::cout << "x,y: " << res1 << "    f(x,y) = "<< Rosenbrock(res1) << "\n\n";
 
-    vector res2 = newton(Himmel, (vector){-0.1, -1.0}, 1e-3, true);
+    vector res2 = newton(Himmel, (vector){2.0, 2.0}, 1e-3, true);
     std::cout << "x,y: " << res2 << "    f(x,y) = "<< Himmel(res2) << "\n\n";
 
 
     std::cout << "\n --- Part B --- \n";
 
-    std::ifstream ifile("higgs.data");
+    std::ifstream ifile("higgs.in");
     vector energy, signal, error;
     double x,y,z;
     while (ifile >> x >> y >> z) {
@@ -56,15 +56,16 @@ int main () {
         return sum; 
     };
 
-    vector res3 = newton(DBW, (vector){125.0, 10.0, 1.0}, 1e-3, true);
+    vector res3 = newton(DBW, (vector){126.0, 10.0, 2.0}, 1e-3, true);
     std::cout << "m,A,Γ: " << res3 << "\n\n";
 
     std::ofstream ofile("fit_higs.data");
     ofile << "# m A Γ \n";
     ofile << res3[0] << " " << res3[1] << " " << res3[2] << " \n";
     ofile << "# Energy Breit-Wigner\n";
-    for(size_t i=0; i<energy.size(); i++) {
-        ofile << energy[i] << " " << BW(energy[i], res3[0], res3[1], res3[2]) << "\n";
+    
+    for(double e = 100.0; e <= 160.0; e += 0.1) {
+        ofile << e << " " << BW(e, res3[0], res3[1], res3[2]) << "\n";
     }
     ofile.close();
     
