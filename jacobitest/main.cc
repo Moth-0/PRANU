@@ -17,8 +17,7 @@ int main() {
     qm::rmat A(n, n);
 
     // 3. Setup a random number generator
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    std::mt19937 gen(42);
     std::uniform_real_distribution<double> dist(-10.0, 10.0);
 
     // 4. Fill 'A' with random values symmetrically
@@ -38,7 +37,7 @@ int main() {
     // We must pass a copy because jacobi_with_eigenvector modifies it in-place.
     qm::cmat Ac = qm::to_complex(A);
     
-    auto [lowest_E_complex, lowest_eigvec_complex] = qm::jacobi_with_eigenvector(Ac, n_vals);
+    auto [lowest_E_complex, lowest_eigvec_complex] = qm::jacobi_full(Ac, n_vals);
 
     std::cout << "=========================================\n";
     std::cout << " TEST 1: Complex Solver (jacobi.h)\n";
