@@ -1,7 +1,7 @@
 # The multiplot was made by Gemini
 # Set output format (made slightly larger to fit 4 plots nicely)
 set terminal pngcairo size 1000,800 enhanced font 'Arial,12'
-set output 'model_vs_actual.png'
+set output 'modelfit.png'
 
 # Enable Multiplot (2 rows, 2 columns)
 set multiplot layout 2,2 title 'Neural Network Calculus' font ',16'

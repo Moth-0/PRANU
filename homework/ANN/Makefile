@@ -7,17 +7,16 @@ RM = rm -f
 
 .SECONDARY:
 
-all : model_vs_actual.png
+all : modelfit.png
 
 HEADERS = network.h minimization.h matrix.h QR.h
 
-Out.txt : main 
+Out.txt : func.in main
 	./main > Out.txt
 
-model.data : main func.in
-	./main
+model.data : Out.txt
 
-model_vs_actual.png : plot_model.gp model.data
+modelfit.png : model.data plot_model.gp 
 	gnuplot plot_model.gp
 
 func.in : rndData
@@ -31,4 +30,4 @@ func.in : rndData
 
 
 clean :
-	$(RM) *.o *.txt *.log *.gpi *.data *.png
+	$(RM) main rndData *.o *.txt *.log *.gpi *.data *.png *.in
