@@ -5,12 +5,23 @@ CXX = c++
 LDLIBS = -lstdc++ -lm
 RM = rm -f
 
-all : Out.txt
+.SECONDARY:
 
-HEADERS = jacobi.h matrix.h
+all : model_vs_actual.png
+
+HEADERS = network.h minimization.h matrix.h QR.h
 
 Out.txt : main 
 	./main > Out.txt
+
+model.data : main func.in
+	./main
+
+model_vs_actual.png : plot_model.gp model.data
+	gnuplot plot_model.gp
+
+func.in : rndData
+	./rndData 200 > func.in
 
 % : %.o
 	$(CXX) $(LDFLAGS) $(LDLIBS) -o $@ $^
