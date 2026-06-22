@@ -41,4 +41,4 @@ main.o : main.cc integrate.h
 
 
 clean :
-	$(RM) *.o *.txt *.log *.gpi *.data
+	$(RM) main *.o *.txt *.log *.gpi *.data *.png

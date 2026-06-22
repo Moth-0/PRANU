@@ -4,8 +4,8 @@
 using namespace pp;
 
 int main(){
-
-    // --- Part A ---
+    std::cout << " --- Part A ---\n";
+    
     auto R_dfdx = [](vector x) -> double {
         return -2.0*(1.0-x[0]) + 200.0*(x[1]-x[0]*x[0]) * (-2.0*x[0]);
     };

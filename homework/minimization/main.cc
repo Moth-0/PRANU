@@ -20,14 +20,17 @@ int main () {
         return v1*v1 + v2*v2;
     };
     
+    std::cout << "1. Rosenbrock Function:\n";
     vector res1 = newton(Rosenbrock, (vector){-1.0, 1.0}, 1e-3, true);
     std::cout << "x,y: " << res1 << "    f(x,y) = "<< Rosenbrock(res1) << "\n\n";
 
+    std::cout << "2. Himmelblau Function:\n";
     vector res2 = newton(Himmel, (vector){2.0, 2.0}, 1e-3, true);
     std::cout << "x,y: " << res2 << "    f(x,y) = "<< Himmel(res2) << "\n\n";
 
 
     std::cout << "\n --- Part B --- \n";
+    std::cout << "Result in higgs.png";
 
     std::ifstream ifile("higgs.in");
     vector energy, signal, error;
@@ -56,6 +59,7 @@ int main () {
         return sum; 
     };
 
+    std::cout << "3. Higgs Boson (Breit-Wigner) Fit:\n";
     vector res3 = newton(DBW, (vector){126.0, 10.0, 2.0}, 1e-3, true);
     std::cout << "m,A,Γ: " << res3 << "\n\n";
 
@@ -68,6 +72,19 @@ int main () {
         ofile << e << " " << BW(e, res3[0], res3[1], res3[2]) << "\n";
     }
     ofile.close();
-    
+
+    std::cout << "\n --- Part C --- \n";
+    std::cout << "1. Rosenbrock Function (Central):\n";
+    vector res1_c = newton_central(Rosenbrock, (vector){-1.0, 1.0}, 1e-3, true);
+    std::cout << "x,y: " << res1_c << "    f(x,y) = "<< Rosenbrock(res1_c) << "\n\n";
+
+    std::cout << "2. Himmelblau Function (Central):\n";
+    vector res2_c = newton_central(Himmel, (vector){2.0, 2.0}, 1e-3, true);
+    std::cout << "x,y: " << res2_c << "    f(x,y) = "<< Himmel(res2_c) << "\n\n";
+
+    std::cout << "3. Higgs Boson (Breit-Wigner) Fit (Central):\n";
+    vector res3_c = newton_central(DBW, (vector){126.0, 10.0, 2.0}, 1e-3, true);
+    std::cout << "m,A,Γ: " << res3_c << "\n\n";
+
     return 0;
 }

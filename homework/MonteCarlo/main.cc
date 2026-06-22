@@ -31,6 +31,7 @@ int main() {
     auto [val, err] = plainmc(elipsoid, a2, b2, N);
     double exact = 4.0/3.0 * M_PI * ep_a * ep_b * ep_c;
 
+    std::cout << " --- Part A --- \n";
     std::cout << " - Ellipsoid Volume Integral \n";
     std::cout << "Estimated: " << val << std::endl;
     std::cout << "Exact:     " << exact << std::endl;
@@ -68,12 +69,31 @@ int main() {
     auto [valc, ec] = cppmc(cos_func, a4, b4, 1e6);
     auto [valq, eq] = quacimc(cos_func, a4, b4, 1e6);
 
-    std::cout << "\n\n - Cos Integral \n";
+    std::cout << "\n\n --- Part B --- \n";
+    std::cout << " - Cos Integral \n";
     std::cout << "plainmc: " << valp << " ± " << ep << std::endl;    
     std::cout << "cppmc:   " << valc << " ± " << ec << std::endl;
     std::cout << "quacimc: " << valq << " ± " << eq << std::endl;
     std::cout << "Exact:   " << exact4 << std::endl;
 
+    // --- Part C: Stratified Sampling ---
+    std::cout << "\n\n --- Part C --- \nGemini helped a lot with this since I didnt understand it. \n";
+    
+    int nmin = 1000; 
+    
+    std::cout << " - Ellipsoid Volume Integral (Stratified) \n";
+    auto [val_strat1, err_strat1] = stratifiedmc(elipsoid, a2, b2, N, nmin);
+    
+    std::cout << "Stratified: " << val_strat1 << " ± " << err_strat1 << std::endl;
+    std::cout << "Exact:      " << exact << std::endl;
+    std::cout << "Act Error:  " << std::abs(exact - val_strat1) << std::endl;
+
+    std::cout << "\n - Cos Integral (Stratified) \n";
+    auto [val_strat2, err_strat2] = stratifiedmc(cos_func, a4, b4, 1e6, nmin);
+    
+    std::cout << "Stratified: " << val_strat2 << " ± " << err_strat2 << std::endl;
+    std::cout << "Exact:      " << exact4 << std::endl;
+    std::cout << "Act Error:  " << std::abs(exact4 - val_strat2) << std::endl;
 
     return 0;
 }

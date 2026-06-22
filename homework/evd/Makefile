@@ -2,7 +2,10 @@ CXXFLAGS = -Wall -Werror -O -std=c++23
 CXX = c++
 LDLIBS = -lstdc++ -lm
 
-all: main rmax.png dr.png energy.png times.png
+all: Out.txt rmax.png dr.png energy.png times.png
+
+Out.txt : main 
+	./main > Out.txt
 
 main: main.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
@@ -70,4 +73,4 @@ times.data: times Makefile
 	done
 
 clean:
-	rm -f main *.data *.png *.txt *.o
+	rm -f main plots times *.data *.png *.txt *.o *.log

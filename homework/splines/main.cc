@@ -7,6 +7,11 @@
 #include "cubespline.h"
 
 int main() {
+    std::cout << "partA.png shows the linear interpolation of a of a cosine, with the anti-derivative. \n"
+              << "partB.png shows the quadradic interpolation for three different functions "
+              << "with their derivative and anti-derivative. \n"
+              << "partC.png shows cubic interpolation with the new double derivative. \n";
+              
     // --- Part A ---
     // Datapoints
     vector xA;

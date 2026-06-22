@@ -80,6 +80,8 @@ struct Halton {
 
 // Following book
 tuple plainmc(Func f, vector& a, vector& b, int N) {
+    if (N <= 0) return {0.0, 0.0};
+
     int dim = a.size(); 
     double V=1.0; for(int i=0; i<dim; i++) V *= b[i]-a[i];
     double sum1=0.0; double sum2=0.0;
@@ -146,27 +148,81 @@ tuple quacimc(Func f, vector& a, vector& b, int N) {
 tuple stratifiedmc(Func f, vector& a, vector& b, int N, int nmin=100) {
     int dim = a.size();
     
-    // Base Case: If N < nmin, return plain MC estimate
-    if (N < nmin) {
+    // Base Case: If N <= nmin, return plain MC estimate
+    if (N <= nmin) {
         return plainmc(f, a, b, N);
     }
 
-    // Sample nmin points
     std::vector<vector> pts(nmin, vector(dim));
     vector fvals(nmin);
-    rng rand(42);
 
-    double sum1 = 0, sum2 = 0;
-
-    for (int i=0; i<nmin; i++) {
-        for(int j=0; j<dim; j++) {
-            pts[i][j] = rand.uniform(a[j], b[j]);
+    for (int i = 0; i < nmin; i++) {
+        for(int j = 0; j < dim; j++) {
+            // Using your randd() so the RNG state doesn't reset on recursive calls
+            pts[i][j] = randd(a[j], b[j]); 
         }
         fvals[i] = f(pts[i]);
-
-        sum1 += fvals[i];
-        sum2 += fvals[i]*fvals[i];
     }
 
-    return {0.0,0.0};
+    // Find the dimension with the largest sub-variance
+    int max_dim = 0;
+    double max_var = -1.0;
+    double best_varL = 0.0;
+    double best_varR = 0.0;
+
+    for (int d = 0; d < dim; d++) {
+        double mid = (a[d] + b[d]) / 2.0;
+        double sumL = 0, sum2L = 0, sumR = 0, sum2R = 0;
+        int nL = 0, nR = 0;
+
+        // Split the evaluated points into left and right sub-volumes for dimension 'd'
+        for (int i = 0; i < nmin; i++) {
+            if (pts[i][d] < mid) {
+                sumL += fvals[i];
+                sum2L += fvals[i] * fvals[i];
+                nL++;
+            } else {
+                sumR += fvals[i];
+                sum2R += fvals[i] * fvals[i];
+                nR++;
+            }
+        }
+
+        // Calculate variance for the left and right halves
+        double varL = (nL > 0) ? (sum2L / nL - (sumL / nL) * (sumL / nL)) : 0.0;
+        double varR = (nR > 0) ? (sum2R / nR - (sumR / nR) * (sumR / nR)) : 0.0;
+        double total_var = varL + varR;
+
+        if (total_var > max_var) {
+            max_var = total_var;
+            max_dim = d;
+            best_varL = varL;
+            best_varR = varR;
+        }
+    }
+
+    // Subdivide the volume along this dimension
+    vector b_left = b;
+    b_left[max_dim] = (a[max_dim] + b[max_dim]) / 2.0;
+    
+    vector a_right = a;
+    a_right[max_dim] = (a[max_dim] + b[max_dim]) / 2.0;
+
+    // Divide the remaining points between the two sub-volumes proportional to sub-variances
+    int remaining_points = N - nmin;
+    int N_left, N_right;
+
+    if (best_varL + best_varR == 0.0) {
+        N_left = remaining_points / 2;
+    } else {
+        N_left = std::round(remaining_points * best_varL / (best_varL + best_varR));
+    }
+    N_right = remaining_points - N_left;
+
+    // Recursive calls on the sub-volumes
+    auto [I_L, E_L] = stratifiedmc(f, a, b_left, N_left, nmin);
+    auto [I_R, E_R] = stratifiedmc(f, a_right, b, N_right, nmin);
+
+    // Estimate the grand integral and grand error
+    return {I_L + I_R, std::sqrt(E_L * E_L + E_R * E_R)};
 }

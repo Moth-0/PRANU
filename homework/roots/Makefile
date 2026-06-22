@@ -10,7 +10,7 @@ all : run_partA run_partB
 HEADERS = matrix.h roots.h QR.h ODE.h
 
 run_partA : partA
-	./partA
+	./partA > Out.txt
 
 run_partB : wavefunction.png convergence.png
 	
@@ -29,8 +29,10 @@ wavefunction.png : partB.data Makefile
 	' | tee log.wavefunction.gpi | gnuplot
 
 partB.data : partB
-	./partB -r_min 0.1 -r_max 8.0 -plt
-
+	@printf " --- Part B ---\nE_0: " >> Out.txt
+	./partB -r_min 0.1 -r_max 8.0 -plt >> Out.txt
+	@printf "Wavefunction and convergence plotted\n\n" >> Out.txt
+	@printf " --- Part C ---\nThis is implimented for all the code, the old implimentation of A is commented out" >> Out.txt
 
 # --- Convergence Studies --- Below made by AI
 

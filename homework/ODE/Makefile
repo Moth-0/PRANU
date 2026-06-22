@@ -4,9 +4,13 @@ CXX = c++
 LDLIBS = -lstdc++ -lm
 RM = rm -f
 
-all : plot_harm.png plot_damp.png plot_lv.png plot_grav.png plot_three.png
+all : Out.txt plot_harm.png plot_damp.png plot_lv.png plot_grav.png plot_three.png
 
-plot_three.png : files
+Out.txt : main
+	./main > Out.txt
+	cat Out.txt
+
+plot_three.png : Out.txt
 	echo '\
 	set terminal pngcairo size 800,400 ;\
 	set output "three_body.png" ;\
@@ -20,7 +24,7 @@ plot_three.png : files
 	     "" using 6:7 skip 1 with lines lw 2 dt 4 lc rgb "green" title "Body 3" \
 	' | tee log.3body.gpi | gnuplot
 
-plot_grav.png : files
+plot_grav.png : Out.txt
 	echo '\
 	set terminal pngcairo ;\
 	set output "$@" ;\
@@ -35,7 +39,7 @@ plot_grav.png : files
 		 "< echo 0 0" with points pt 7 lc rgb "gold" title "Star" \
 	' | tee log.fig4.gpi | gnuplot
 
-plot_harm.png: files
+plot_harm.png: Out.txt
 	echo '\
 	set terminal pngcairo ;\
 	set output "$@" ;\
@@ -43,11 +47,11 @@ plot_harm.png: files
 	set xlabel "Time" ;\
 	set ylabel "y" ;\
 	set tics out ;\
-	plot "data/harmonic.data" using 1:2 skip 1 with lines lc rgb "black" title "y1", \
-	 	 "data/harmonic.data" using 1:3 skip 1 with lines lc rgb "red" title "y2" \
+	plot "data/harmonic.data" using 1:2 skip 1 with lines lc rgb "black" title "y", \
+	 	 "data/harmonic.data" using 1:3 skip 1 with lines lc rgb "red" title "dy/dt" \
 	' | tee log.fig1.gpi | gnuplot
 
-plot_damp.png : files
+plot_damp.png : Out.txt
 	echo '\
 	set terminal pngcairo ;\
 	set output "$@" ;\
@@ -55,11 +59,11 @@ plot_damp.png : files
 	set xlabel "Time" ;\
 	set ylabel "y" ;\
 	set tics out ;\
-	plot "data/damped.data" using 1:2 skip 1 with lines lc rgb "black" title "y1", \
-		 "data/damped.data" using 1:3 skip 1 with lines lc rgb "red" title "y2" \
+	plot "data/damped.data" using 1:2 skip 1 with lines lc rgb "black" title "y", \
+		 "data/damped.data" using 1:3 skip 1 with lines lc rgb "red" title "dy/dt" \
 	' | tee log.fig2.gpi | gnuplot
 
-plot_lv.png : files 
+plot_lv.png : Out.txt 
 	echo '\
 	set terminal pngcairo ;\
 	set output "$@" ;\
@@ -67,13 +71,10 @@ plot_lv.png : files
 	set xlabel "Time" ;\
 	set ylabel "y" ;\
 	set tics out ;\
-	plot "data/lv.data" using 1:2 skip 1 with lines lc rgb "black" title "y1", \
-		 "data/lv.data" using 1:3 skip 1 with lines lc rgb "red" title "y2" \
+	plot "data/lv.data" using 1:2 skip 1 with lines lc rgb "black" title "prey", \
+		 "data/lv.data" using 1:3 skip 1 with lines lc rgb "red" title "predator" \
 	' | tee log.fig3.gpi | gnuplot
 
-
-files : main
-	./main
 
 main : main.o
 	$(CXX) $(LDFLAGS) $(LDLIBS) -o $@ $^
@@ -83,4 +84,4 @@ main.o : main.cc ODE.h
 
 
 clean :
-	$(RM) *.o *.txt *.log *.gpi data/*.data
+	$(RM) main *.o *.txt *.log *.gpi data/*.data *.png

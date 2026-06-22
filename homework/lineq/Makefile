@@ -4,7 +4,7 @@ CXX = c++
 LDLIBS = -lstdc++ -lm
 RM = rm -f
 
-all : Out.txt
+all : Out.txt times.png
 
 Out.txt : main Makefile
 	./main > Out.txt 
@@ -16,11 +16,13 @@ times.data : time
 		time --format "$$N %e" --output $@ --append \
 		./$< -size $$N 1>out.txt 2>err.txt ;\
 	done 
+	$(RM) out.txt err.txt
 
 times.png: times.data Makefile
 	echo '\
 	set terminal png ;\
 	set output "$@" ;\
+	set title "Runtime of QR-factorization" ;\
 	set xlabel "N" ;\
 	set ylabel "time (s)" ;\
 	set tics out ;\
@@ -44,4 +46,4 @@ time.o : time.cc matrix.h QR.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean :
-	$(RM) *.o *.txt *.log *.gpi *.data
+	$(RM) main time *.o *.txt *.png *.data *.log *.gpi

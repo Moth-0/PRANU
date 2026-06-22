@@ -78,6 +78,9 @@ int main () {
     double H = std::log(2)/(-res[1]);
     double err_H = H / (-res[1]) * err[1];
 
+    std::cout << "Test radioactive decay, plot in plot.png: \n"
+              << "The uncertainties of part B are also included. \n" 
+              << "The dotted lines show the change of δc:\n\n";
     std::cout << "Resulting coef: " << res << " ± " << err << std::endl;
     std::cout << "Half-life = " << H << " ± " << err_H << " days" << std::endl;
     std::cout << "Experimental: 3.632 days";

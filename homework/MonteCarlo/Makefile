@@ -36,6 +36,7 @@ sine_wave.png : files Makefile
 
 files : main
 	./main > Out.txt
+	cat Out.txt
 
 main : main.o
 	$(CXX) $(LDFLAGS) $(LDLIBS) -o $@ $^
@@ -45,4 +46,4 @@ main.o : main.cc montecarlo.h
 
 
 clean :
-	$(RM) *.o *.txt *.log *.gpi *.data *.png
+	$(RM) main *.o *.txt *.log *.gpi *.data *.png

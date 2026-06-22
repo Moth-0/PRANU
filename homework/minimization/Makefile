@@ -40,4 +40,4 @@ higgs.png : fit_higs.data higgs.in Makefile
 
 
 clean :
-	$(RM) *.o *.txt *.log *.gpi *.data *.png
+	$(RM) main *.o *.txt *.log *.gpi *.data *.png

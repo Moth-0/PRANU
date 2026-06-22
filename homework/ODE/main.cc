@@ -49,6 +49,9 @@ auto f_grav(double epsilon) {
 }
 
 int main () {
+    std::cout << "plot_damp.png, plot_harm.png and plot_lv.png show 3 different functions solved with ODE. \n"
+              << "plot_grav.png shows the classic and relativistic orbit of a planet. \n" 
+              << "three_body.png shows the three body configuration. \n\n";
 
     // --- Part A --- 
     // - Simple Harmonic test u''=-u

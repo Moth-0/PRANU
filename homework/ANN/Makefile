@@ -24,6 +24,8 @@ func.in : rndData
 
 ODE.png : ode_results.data
 	gnuplot plot_ode.gp
+	@printf "\n --- Part C --- \nPlotted in ODE.png\n\n"
+	@printf "Gemini made the plots for this exercise\n"
 
 ode_results.data : mainC
 	./mainC
@@ -36,4 +38,4 @@ ode_results.data : mainC
 
 
 clean :
-	$(RM) main rndData *.o *.txt *.log *.gpi *.data *.png *.in
+	$(RM) main mainC rndData *.o *.txt *.log *.gpi *.data *.png *.in

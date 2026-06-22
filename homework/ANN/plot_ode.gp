@@ -3,7 +3,7 @@ set terminal pngcairo size 800,800 enhanced font 'Arial,12'
 set output 'ODE.png'
 
 # Create a 2x1 grid for a professional presentation
-set multiplot layout 2,1 title 'Physics-Informed Neural Network: y'''' + y = 0'
+set multiplot layout 2,1 title "Physics-Informed Neural Network: y'''' + y = 0"
 
 # ----------------------------------------------------
 # Top Plot: The Fit

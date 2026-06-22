@@ -4,9 +4,14 @@ CXX = c++
 LDLIBS = -lstdc++ -lm
 RM = rm -f
 
-all : partA.png partB.png partC.png
+all : Out.txt partA.png partB.png partC.png
 
-partA.png : files Makefile
+Out.txt : main
+	./main > Out.txt
+	cat Out.txt
+
+
+partA.png : Out.txt Makefile
 	echo '\
 	set terminal pngcairo ;\
 	set output "$@" ;\
@@ -19,7 +24,7 @@ partA.png : files Makefile
 	 "inter_A.data" using 1:3 with lines lw 2 lc rgb "blue" dt 2 title "linterpInter" \
 	' | tee log.fig1.gpi | gnuplot
 
-partB.png : files Makefile
+partB.png : Out.txt Makefile
 	echo '\
 	set terminal pngcairo size 1500,500;\
 	set output "$@" ;\
@@ -50,7 +55,7 @@ partB.png : files Makefile
 	unset multiplot \
 	' | tee log.fig2.gpi | gnuplot
 
-partC.png : files Makefile
+partC.png : Out.txt Makefile
 	echo '\
 	set terminal pngcairo size 1500,500;\
 	set output "$@" ;\
@@ -84,9 +89,6 @@ partC.png : files Makefile
 	unset multiplot \
 	' | tee log.fig3.gpi | gnuplot
 
-files : main
-	./main
-
 main : main.o
 	$(CXX) $(LDFLAGS) $(LDLIBS) -o $@ $^
 
@@ -95,4 +97,4 @@ main.o : main.cc linspline.h quadspline.h cubespline.h
 
 
 clean :
-	$(RM) *.o *.txt *.log *.gpi *.data
+	$(RM) main *.o *.txt *.log *.gpi *.data *.png

@@ -59,11 +59,13 @@ int main (int argc, char *argv[]) {
     FOR_MAT(out3) assert(approx(out3(i,j), res.D(i,j)));
 
 
-    std::cout << "--- Part B.1 --- \n";
-    std::cout << " - In plots.cc -\n\n";
+    std::cout << "\n--- Part B.1 --- \n";
+    std::cout << " - Implimentation in plots.cc -\n" 
+              << " - Numerical wavefunction in energy.png\n";
     
     
-    std::cout << "--- Part B.2 --- \n";
+    std::cout << "\n--- Part B.2 --- \n";
+    std::cout << " - convergence shown in dr.png and rmax.png\n";
     int rmax = 10;
     double dr = 0.1;
     std::string file = "energy.data";
@@ -100,8 +102,9 @@ int main (int argc, char *argv[]) {
 	    return 1;
     }
 
-    std::cout << "--- Part C - Checking runtime O(n3) --- \n";
-    std::cout << " - In times.cc - \n";
+    std::cout << "\n--- Part C - Checking runtime O(n3) --- \n";
+    std::cout << " - Implimentation in times.cc - \n"
+              << " - Result in times.png \n";
     
 
     return 0;
