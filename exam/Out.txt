@@ -1,0 +1,44 @@
+The comparison of the adaptive 2 split method from homework 
+and the new adaptive 3 split integrator. 
+We can see that the 3 split fails and the 2 split uses a lot of calls 
+for the function 1/sqrt(x) since it can not evaluate 1/sqrt(0). 
+------------------------------------------------------------------------------------------
+Function            Method         Result         Error          Est. Error     Evals     
+------------------------------------------------------------------------------------------
+sqrt(x)             2-Split        0.666681       -1.42662e-05   7.17421e-05    40        
+                    3-Split        0.666677       -1.04652e-05   6.3409e-05     33        
+
+1/sqrt(x)           2-Split        2              2.61204e-06    7.70898e-05    17140     
+                    3-Split        inf            -inf           nan            12219     
+------------------------------------------------------------------------------------------
+
+To fix this we use Clenshaw Curtis to rewtrite the function, 
+this allows the function value to be finite: 
+------------------------------------------------------------------------------------------
+Function            Method         Result         Error          Est. Error     Evals     
+------------------------------------------------------------------------------------------
+sqrt(x)             CC-2-Split     0.666667       1.13668e-07    7.98719e-05    64        
+                    CC-3-Split     0.666666       2.66896e-07    5.38161e-05    63        
+
+1/sqrt(x)           CC-2-Split     2              1.09689e-07    6.90012e-05    52        
+                    CC-3-Split     2              2.50819e-07    0.000104398    27        
+------------------------------------------------------------------------------------------
+
+Now we look at some functions with infinite limits, 
+and use all four integrators above: 
+------------------------------------------------------------------------------------------
+Function (Limits)   Method         Result         Error          Est. Error     Evals     
+------------------------------------------------------------------------------------------
+x*exp(-x^2) [0,inf] Inf-2-Split    0.499944       5.63819e-05    6.45123e-05    84        
+                    Inf-3-Split    0.499998       2.40418e-06    4.50494e-05    81        
+                    CC-Inf-2-Split 0.499998       2.09072e-06    5.05242e-05    108       
+                    CC-Inf-3-Split 0.499937       6.30794e-05    4.44515e-05    81        
+
+exp(-x^2) [-inf,inf]Inf-2-Split    1.77242        2.97194e-05    7.02821e-05    176       
+                    Inf-3-Split    1.77317        -0.000717974   0.000117346    126       
+                    CC-Inf-2-Split 1.77256        -0.000102467   6.11391e-05    240       
+                    CC-Inf-3-Split 1.77242        3.80785e-05    4.5943e-05     198       
+------------------------------------------------------------------------------------------
+
+Generating convergence data for erf(1)...
+Data saved to 'erf_convergence.txt'!

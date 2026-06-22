@@ -21,7 +21,6 @@ double err_f(double x, double acc=1e-4, double eps=1e-4) {
         double integ = integrate(f_e2, 0.0, 1.0, acc, eps).val;
         return 1.0 - 2.0/std::sqrt(M_PI) * integ;
     }
-
 }
 
 // Recursion counter helper function
