@@ -1,0 +1,6 @@
+--- Part A & B---
+--- STARTING TRAINING ---
+Step: 1000 | Grad: 9.50697 | dx length: 1 | Lambda: 1
+Minimization steps: 1154
+Fitted cos(5.0 * x - 1.0) * exp(-x * x) function shown in 'modelfit.png'. 
+Derivatives from part B also plotted. 
