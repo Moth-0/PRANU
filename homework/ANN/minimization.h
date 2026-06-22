@@ -81,6 +81,14 @@ vector newton(const func& f, vector x, double acc = 1e-3, bool verbose = false) 
             λ *= 0.5;
         }
         x += λ*dx;
+
+        // Put this at the VERY END of your loop, right before `steps++` loops around
+        if(verbose && steps % 1000 == 0) {
+            std::cout << "Step: " << steps 
+                      << " | Grad: " << g.norm() 
+                      << " | dx length: " << dx.norm() 
+                      << " | Lambda: " << λ << "\n";
+        }
     }
 
     if (verbose) std::cout << "Minimization steps: " << steps << "\n";

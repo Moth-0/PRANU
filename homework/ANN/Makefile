@@ -7,7 +7,7 @@ RM = rm -f
 
 .SECONDARY:
 
-all : modelfit.png
+all : modelfit.png ODE.png
 
 HEADERS = network.h minimization.h matrix.h QR.h
 
@@ -21,6 +21,12 @@ modelfit.png : model.data plot_model.gp
 
 func.in : rndData
 	./rndData 200 > func.in
+
+ODE.png : ode_results.data
+	gnuplot plot_ode.gp
+
+ode_results.data : mainC
+	./mainC
 
 % : %.o
 	$(CXX) $(LDFLAGS) $(LDLIBS) -o $@ $^
