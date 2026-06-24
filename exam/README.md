@@ -17,3 +17,30 @@ The final phase of the project calculates $\text{erf}(1)$ to a precision down to
 * **Convergence Plot (`erf_error.png`):** Plots the *Actual Error* against the *Requested Accuracy (acc)*. Because the data points closely track the $y=x$ target line, it visually proves that the integrators correctly respect the user's requested error bounds until hitting the physical floating-point limit. 
 We see that the two methods are simillar in accuracy, but 2-split flattens out at $10^{-14}$ but 3-split keeps going down. 
 * **Evaluations Plot (`erf_evals.png`):** Plots the *Number of Evaluations* against the *Requested Accuracy*. It visually shows the computational efficiency of the algorithms. As the tolerance tightens, the 3-Split line remains lower than the 2-Split line, proving it achieves the same maximum precision for significantly less work.
+
+
+## The Weights
+
+#### The Higher-Order Rule (3/8, 2/8, 3/8)
+These weights are calculated using the **Method of Undetermined Coefficients**. We mathematically force the approximation to be 100% exact for polynomials up to degree 2 (functions 1, x, and x^2) over the interval [0, 1]:
+
+1. **Degree 0 (f(x) = 1):** Exact integral is 1.
+   w1 + w2 + w3 = 1
+2. **Degree 1 (f(x) = x):** Exact integral is 1/2.
+   w1(1/6) + w2(1/2) + w3(5/6) = 1/2
+3. **Degree 2 (f(x) = x^2):** Exact integral is 1/3.
+   w1(1/6)^2 + w2(1/2)^2 + w3(5/6)^2 = 1/3
+
+Solving this exact 3x3 linear system yields the only valid solution: **w1 = 3/8**, **w2 = 2/8**, and **w3 = 3/8**. 
+
+#### The Lower-Order Rule (1/3, 1/3, 1/3)
+These weights come geometrically from the **Composite Midpoint Rule** (Rectangle Rule). 
+
+If you slice the interval [0, 1] into three equal chunks, every chunk has a width of exactly 1/3. To approximate the area of each chunk, you build a rectangle by sampling the function's height at the exact middle of each chunk (at 1/6, 1/2, and 5/6). 
+
+Adding the area of those three rectangles (width * height) gives:
+Total Area ≈ (1/3)f(1/6) + (1/3)f(1/2) + (1/3)f(5/6)
+## Overall
+The project has been implimented and all points have been considered. The 3-split model has been compared to the 2-split model from the homework, and the data has been reprecented. 
+The error funnction has also been plotted, and compared to the 2-split model. 
+* Score: 10/10
